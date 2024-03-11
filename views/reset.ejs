@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <form id="resetForm" action="/reset-password" method="POST">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" required><br>
+    
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" required><br>
+    
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+    
+        <label for="newPassword">New Password:</label>
+        <input type="password" id="newPassword" name="newPassword" required><br>
+    
+        <input type="submit" value="Reset Password">
+      </form>
+    
+      <!-- <script>
+        document.getElementById('resetForm').addEventListener('submit', function (event) {
+          event.preventDefault();
+    
+          const firstName = document.getElementById('firstName').value;
+          const lastName = document.getElementById('lastName').value;
+          const email = document.getElementById('email').value;
+          const newPassword = document.getElementById('newPassword').value;
+    
+          // Make a POST request to the form's action URL
+          fetch(this.action, {
+            method: this.method,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ firstName, lastName, email, newPassword }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            alert(data); // Display the response message (e.g., "Password reset successful")
+            // You can redirect the user to a login page or any other page as needed
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.'); // Handle errors appropriately
+          });
+        });
+      </script> -->
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!-- views/modules.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Modules</title>
+    <style>
+        /* Add your styles here */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            /* Light background color */
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            flex-direction: column;
+            /* Adjust to column layout */
+        }
+
+        .header {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: blue;
+            /* Highlighted color */
+        }
+
+        .card {
+            flex: 1;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px;
+            /* Add margin for a boundary */
+            background-color: #fff;
+            /* Card background color */
+            display: flex;
+            flex-direction: row;
+            /* Adjust to row layout */
+        }
+
+        .module-list {
+            flex: 2;
+            padding-right: 20px;
+            overflow-y: auto;
+            /* Make the module list scrollable */
+        }
+
+        .module-list button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 10px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .module-content {
+            flex: 6;
+            overflow-y: auto;
+            /* Make the content scrollable */
+        }
+
+        .module {
+            padding: 10px;
+        }
+
+        .section {
+            margin-bottom: 15px;
+        }
+
+        .section h3 {
+            margin-bottom: 5px;
+        }
+
+        .quiz {
+            margin-top: 20px;
+        }
+
+        .quiz-buttons {
+            text-align: right;
+            margin-top: 10px;
+            /* Adjust the margin as needed */
+        }
+
+        #submitQuiz {
+            background-color: blue;
+            /* Set the background color to blue */
+            color: white;
+            /* Set the text color to white */
+            padding: 10px;
+            /* Add padding for better appearance */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header" id="course-header">
+            <!-- Course name will be dynamically rendered here -->
+        </div>
+
+        <div class="card">
+            <div class="module-list" id="module-list">
+                <!-- List of modules and quiz will be dynamically rendered here -->
+            </div>
+
+            <div class="module-content" id="modules-container">
+                <!-- Module content will be dynamically rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            try {
+                const co_id = '<%= co_id %>'; // Injected value from your server-side logic
+                const response = await fetch(`/get_courses?course_id=${co_id}`);
+                const data = await response.json();
+
+                // Render course name
+                const courseHeader = document.getElementById('course-header');
+                courseHeader.innerText = data.course.name;
+
+                // Render module list and quiz
+                const moduleListContainer = document.getElementById('module-list');
+                data.modules.forEach(module => {
+                    // Render regular module button
+                    const button = document.createElement('button');
+                    button.innerText = module.module_id;
+                    button.addEventListener('click', () => renderModuleContent(module));
+                    moduleListContainer.appendChild(button);
+                });
+
+                // Render quiz button
+                const quizButton = document.createElement('button');
+                quizButton.innerText = 'Quiz';
+                quizButton.classList.add('quiz');
+                quizButton.addEventListener('click', () => renderQuizContent(data.quiz));
+                moduleListContainer.appendChild(quizButton);
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+            }
+        });
+
+        // Function to render module content
+        function renderModuleContent(module) {
+            const modulesContainer = document.getElementById('modules-container');
+            modulesContainer.innerHTML = ''; // Clear previous content
+
+            const moduleDiv = document.createElement('div');
+            moduleDiv.classList.add('module');
+            moduleDiv.id = module.module_id;
+
+            moduleDiv.innerHTML = `
+                <h2>${module.module_title}</h2>
+                <div class="body-title">${module.body_title}</div>
+                ${renderSections(module.body)}
+            `;
+
+            modulesContainer.appendChild(moduleDiv);
+        }
+
+        // Function to render quiz content
+        function renderQuizContent(quiz) {
+            const modulesContainer = document.getElementById('modules-container');
+            modulesContainer.innerHTML = ''; // Clear previous content
+
+            const quizDiv = document.createElement('div');
+            quizDiv.classList.add('quiz');
+
+            quizDiv.innerHTML = `
+            <h2>${quiz.title}</h2>
+            ${renderQuizQuestions(quiz.questions)}
+            <div class="quiz-buttons">
+                <button id="submitQuiz" disabled>Submit</button>
+                <div id="quizResult"></div>
+            </div>
+        `;
+
+            modulesContainer.appendChild(quizDiv);
+
+            const submitButton = document.getElementById('submitQuiz');
+            const resultContainer = document.getElementById('quizResult');
+
+            // Enable the submit button only when all questions are answered
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    submitButton.disabled = !areAllQuestionsAnswered();
+                });
+            });
+
+            function areAllQuestionsAnswered() {
+                return [...document.querySelectorAll('input[type="radio"]:checked')].length === quiz.questions.length;
+            }
+
+            submitButton.addEventListener('click', () => {
+                if (areAllQuestionsAnswered()) {
+                    const form = document.querySelector('form');
+                    const selectedAnswers = new FormData(form);
+                    let score = 0;
+                   // console.log(quiz, "11");
+                    quiz.questions.forEach((question, index) => {
+                        const selectedAnswerIndex = Number(selectedAnswers.get(`question-${index}`));
+                        if (selectedAnswerIndex === question.answer) {
+                            score++;
+                        } else {
+                            score--;
+                        }
+                    });
+
+                    resultContainer.innerHTML = `Your final score: ${score}/${quiz.questions.length}`;
+                } else {
+                    resultContainer.innerHTML = 'Please answer all questions before submitting.';
+                }
+            });
+        }
+
+        // Function to render quiz questions
+        function renderQuizQuestions(questions) {
+            let questionsHtml = '<form>'; // Wrap questions in a form for easier handling
+            questions.forEach((question, index) => {
+                questionsHtml += `
+                <div class="quiz-question">
+                    <p>${question.question}</p>
+                    ${question.option.map((option, optionIndex) => `
+                        <label>
+                            <input type="radio" name="question-${index}" value="${optionIndex}">
+                            ${option}
+                        </label>
+                        <br>
+                    `).join('')}
+                </div>
+            `;
+            });
+            questionsHtml += '</form>';
+            return questionsHtml;
+        }
+
+        // Function to render sections of a module
+        function renderSections(sections) {
+            let sectionHtml = '';
+            sections.forEach(section => {
+                sectionHtml += '<div class="section">';
+                section.para.forEach(para => {
+                    sectionHtml += `<p>${para}</p>`;
+                });
+                if (section.child && section.child.length > 0) {
+                    sectionHtml += '<ul>';
+                    section.child.forEach(child => {
+                        sectionHtml += `
+                            <li>
+                                <h3>${child.title}</h3>
+                                <ul>
+                                    ${child.para.map(para => `<li>${para}</li>`).join('')}
+                                </ul>
+                            </li>
+                        `;
+                    });
+                    sectionHtml += '</ul>';
+                }
+                sectionHtml += '</div>';
+            });
+            return sectionHtml;
+        }
+    </script>
+</body>
+
+</html>

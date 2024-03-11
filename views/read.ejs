@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+
+    .message-box {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .message-box h2 {
+      margin-top: 0;
+    }
+
+    .close-btn {
+      background-color: #fff;
+      color: #4CAF50;
+      border: none;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 3px;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="message-box">
+    <h2>Registration Successful!</h2>
+    <p>Hi <%= user_name %>, Thank you for registering. Your account has been created successfully.</p>
+    <button class="close-btn" onclick="redirectToIndex()">Sign In</button>
+  </div>
+
+  <script>
+    function redirectToIndex() {
+            // Redirect to the index.html page in the frontend folder
+            window.location.href = '/sign';
+        }
+  </script>
+
+</body>
+</html>

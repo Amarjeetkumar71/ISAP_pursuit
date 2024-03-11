@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Result - Fail</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+
+    .result-box {
+      width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #FF5733;
+      color: #fff;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .button-container {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    .home-btn {
+      background-color: #2196F3;
+    }
+
+    .enroll-btn {
+      background-color: #FFC107;
+    }
+
+    .logout-btn {
+      background-color: #f44336;
+    }
+  </style>
+</head>
+<body>
+  <div class="result-box">
+    <h1>Sorry, You Didn't Pass the Quiz</h1>
+    <p>You scored <%= marks %> marks. Better luck next time!</p>
+    
+    <div class="button-container">
+      <button class="button home-btn" onclick="goToHomePage()">Go to Home Page</button>
+      <button class="button enroll-btn" onclick="re_attempt()">Re-Attempt the Course</button>
+      <button class="button logout-btn" onclick="logOut()">Log Out</button>
+    </div>
+  </div>
+
+  <script>
+    function goToHomePage() {
+      // Implement logic to navigate to the home page
+    //   alert('Redirecting to Home Page');
+    window.location.href="/";
+    }
+
+    function re_attempt() {
+      // Implement logic to enroll in another course
+      //alert('Enrolling in Another Course');
+      window.location.href="/enroll";
+    }
+
+    function logOut() {
+      // Implement logic to log out
+      window.location.href="/logout";
+    }
+  </script>
+</body>
+</html>

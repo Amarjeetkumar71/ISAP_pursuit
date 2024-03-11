@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset Successful</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .message-box {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .close-button {
+            background-color: #fff;
+            color: #4caf50;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 3px;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .close-button:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="message-box">
+        <h2>Password Reset Successful</h2>
+        <p>Your password has been successfully reset.</p>
+        <button class="close-button"  onclick="go_to_sign()">Sign In</button>
+    </div>
+
+    <script>
+        function go_to_sign() {
+            // You can add additional logic here if needed
+            // For example, redirecting the user to another page.
+            window.location.href = "/sign";
+        }
+    </script>
+</body>
+</html>

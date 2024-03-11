@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 20%;
+            background-color: #3498db;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .sidebar h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .sidebar h2 {
+            color: #fff;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            cursor: pointer;
+            padding: 10px;
+            margin-bottom: 5px;
+            background-color: #2980b9;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar li:hover {
+            background-color: #2c3e50;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #3498db;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+    </style>
+    <title>Course Website</title>
+</head>
+<body>
+
+    <div class="container">
+        <div class="sidebar">
+            <h1>Cyber Mastery 101</h1>
+            <ul id="moduleList">
+                <li onclick="loadModule(1)">Module 1</li>
+                <li onclick="loadModule(2)">Module 2</li>
+                <li onclick="loadModule(3)">Module 3</li>
+                <li onclick="loadModule(4)">Module 4</li>
+                <li onclick="loadModule(5)">Module 5</li>
+                <li onclick="loadModule(6)">Attempt Quiz</li>
+            </ul>
+        </div>
+
+        <div class="content" id="moduleContent">
+            <h2>Module Content</h2>
+            <p>Select a module on the left to view its content.</p>
+        </div>
+    </div>
+
+    <script>
+        function loadModule(moduleNumber) {
+            const moduleContent = document.getElementById('moduleContent');
+            let content = '';
+
+            switch (moduleNumber) {
+                case 1:
+                    content = `<h2>Module ${moduleNumber} - Introduction to Cybersecurity Essentials</h2>
+                    <p>
+        Cybersecurity is a critical aspect of our increasingly interconnected world, where digital technologies play a pivotal role
+        in our daily lives. As we become more dependent on the internet, the need for robust cybersecurity measures has never been
+        more crucial. The term "Cybersecurity Essentials" refers to the fundamental principles and practices that individuals and
+        organizations must adopt to protect their digital assets and sensitive information from cyber threats.
+    </p>
+
+    <p>
+        At its core, cybersecurity is about safeguarding electronic systems, networks, and data from unauthorized access, attacks,
+        and damage. Cyber threats are diverse and ever-evolving, ranging from common malware and phishing attacks to sophisticated
+        hacking attempts and nation-state cyber warfare. Understanding the essentials of cybersecurity is essential for
+        individuals, businesses, and governments to navigate the digital landscape safely.
+    </p>
+
+    <p>
+        One of the fundamental pillars of cybersecurity is confidentiality, ensuring that sensitive information remains private
+        and accessible only to authorized individuals. This involves implementing encryption protocols, access controls, and
+        secure communication channels to prevent unauthorized access or data breaches. A breach of confidentiality can have severe
+        consequences, leading to financial losses, reputational damage, and compromised personal or corporate information.
+    </p>
+
+    <p>
+        Another critical aspect of cybersecurity is integrity, which ensures that data remains accurate, unaltered, and reliable.
+        Cyber attackers often aim to manipulate or corrupt information to deceive individuals or organizations. Implementing
+        measures such as data validation, checksums, and digital signatures helps maintain the integrity of data and systems,
+        reducing the risk of malicious alterations.
+    </p>
+
+    <p>
+        Availability is the third cornerstone of cybersecurity, emphasizing the need for uninterrupted access to information and
+        services. Cyber attacks often target a system's availability through methods like Distributed Denial of Service (DDoS)
+        attacks, which flood a network with traffic, making it unavailable to legitimate users. Employing redundancy, load
+        balancing, and disaster recovery plans ensures that systems remain available even in the face of cyber threats.
+    </p>
+
+    <p>
+        Cybersecurity also involves addressing vulnerabilities and mitigating risks. Regularly updating software, applying security
+        patches, and conducting vulnerability assessments are crucial practices to identify and fix potential weaknesses in
+        systems. Organizations must also educate their employees on cybersecurity best practices to create a security-aware
+        culture that reduces the human factor in cyber threats, such as falling victim to phishing attacks.
+    </p>
+
+    <p>
+        In addition to prevention, detection and response are integral components of cybersecurity. Implementing advanced threat
+        detection tools and establishing incident response plans help identify and mitigate cyber threats promptly. The ability to
+        respond effectively to a cyber incident is vital in minimizing the impact and preventing further damage.
+    </p>
+
+    <p>
+        The landscape of cybersecurity is dynamic, with new threats emerging regularly. As a result, continuous learning and
+        adaptation are essential components of cybersecurity essentials. Professionals in the field must stay updated on the
+        latest cybersecurity trends, tools, and techniques to effectively protect against evolving threats.
+    </p>
+
+    <p>
+        In conclusion, the introduction to cybersecurity essentials is paramount in our digital age. As individuals and
+        organizations increasingly rely on technology, the need for robust cybersecurity measures becomes non-negotiable.
+        Understanding the principles of confidentiality, integrity, and availability, along with proactive risk management and
+        incident response, forms the foundation of a comprehensive cybersecurity strategy. As we navigate the complexities of the
+        digital world, embracing cybersecurity essentials is not only a necessity but also a proactive measure to ensure a secure
+        and resilient digital future.
+    </p>
+`;
+                    break;
+                case 2:
+                    content = `<h2>Module ${moduleNumber} - Cyber Threat Landscape Analysis</h2>
+                    <section>
+        <h2>1. Evolution of Cyber Threats:</h2>
+        <p>The landscape of cyber threats has undergone a profound transformation over the years. Initially, cyberattacks were characterized by relatively simple viruses and worms. However, with the rapid advancement of technology, cybercriminals have adapted, creating sophisticated and multi-faceted threats. Today, the threat landscape encompasses a wide array of malicious activities, including ransomware attacks, advanced persistent threats (APTs), social engineering, and zero-day exploits.</p>
+    </section>
+
+    <section>
+        <h2>2. Threat Actors:</h2>
+        <p>Understanding the motives and capabilities of threat actors is crucial in analyzing the cyber threat landscape. Threat actors can range from individual hackers to well-funded criminal organizations and nation-states. The motivations behind cyberattacks vary, including financial gain, political motives, espionage, and hacktivism. Nation-state actors, in particular, have emerged as formidable adversaries, engaging in cyber warfare for geopolitical influence and national security objectives.</p>
+    </section>
+
+    <section>
+        <h2>3. Emerging Trends:</h2>
+        <p>Continuous monitoring of emerging trends is vital for staying ahead of evolving threats. The rise of artificial intelligence (AI) and machine learning in both cyber defenses and attacks is a notable trend. Cybercriminals leverage AI to automate attacks and enhance evasion techniques, while defenders use AI for anomaly detection and threat prediction. Additionally, the increasing connectivity of devices through the Internet of Things (IoT) introduces new vulnerabilities, expanding the attack surface for cyber threats.</p>
+    </section>
+
+    <section>
+        <h2>4. Vulnerabilities and Exploits:</h2>
+        <p>Identifying and patching vulnerabilities is a critical aspect of cybersecurity. The proliferation of software and hardware systems, coupled with the complexity of modern IT environments, creates numerous potential points of entry for cyber attackers. Zero-day exploits, which target unknown vulnerabilities before they are patched, pose a significant challenge. Organizations must prioritize vulnerability management and adopt proactive measures to reduce their exposure to potential exploits.</p>
+    </section>
+
+    <section>
+        <h2>5. Human Factor:</h2>
+        <p>The human factor remains a prominent vulnerability in the cyber threat landscape. Social engineering techniques, such as phishing and spear-phishing, capitalize on human vulnerabilities to gain unauthorized access. Educating users about cybersecurity best practices, implementing robust authentication mechanisms, and fostering a cybersecurity-aware culture within organizations are essential components of mitigating the human factor in cyber threats.</p>
+    </section>
+
+    <section>
+        <h2>6. Regulatory Landscape:</h2>
+        <p>The regulatory environment plays a pivotal role in shaping the response to cyber threats. Governments and regulatory bodies worldwide are enacting stringent cybersecurity regulations to protect sensitive data and critical infrastructure. Compliance with these regulations not only helps organizations avoid legal consequences but also enhances overall cybersecurity resilience.</p>
+    </section>
+
+    <section>
+        <h2>7. Cybersecurity Frameworks and Collaboration:</h2>
+        <p>Implementing effective cybersecurity requires a multi-faceted approach. Cybersecurity frameworks, such as NIST Cybersecurity Framework and ISO/IEC 27001, provide guidelines for organizations to establish robust cybersecurity practices. Additionally, collaboration between public and private sectors, sharing threat intelligence, and fostering international cooperation are essential in combating the global nature of cyber threats.</p>
+    </section>`;
+                    break;
+                case 3:
+                    content = `<h2>Module ${moduleNumber} - Privacy Principles and Strategies</h2>
+                    <p>Privacy is a fundamental aspect of human existence, and as we navigate an increasingly digitized world, safeguarding our personal information has become more challenging yet crucial. Privacy principles and strategies play a pivotal role in shaping how individuals, organizations, and governments approach the protection of sensitive data.</p>
+
+<p>At the heart of privacy principles is the concept of consent. Individuals should have control over their personal information and must be informed about how their data will be collected, used, and shared. Transparency is a key element, and organizations must communicate their privacy practices clearly and in language that is easily understandable to the average person. This transparency builds trust between consumers and entities handling their data, fostering a sense of security.</p>
+
+<p>Another fundamental privacy principle is data minimization. This principle advocates for the collection of only the necessary information required for a specific purpose. Organizations should refrain from amassing excessive data that goes beyond the scope of their intended use. By limiting data collection, the risk of unauthorized access and misuse is reduced, thereby enhancing privacy protection.</p>
+
+<p>Security is an integral aspect of privacy strategies. Robust cybersecurity measures are essential to safeguard against data breaches and unauthorized access. Encryption, secure network protocols, and multi-factor authentication are just a few tools in the arsenal of privacy-conscious entities. Regular security audits and updates are imperative to adapt to evolving threats and vulnerabilities.</p>
+
+<p>Privacy by design is a proactive approach that integrates privacy considerations into the development of systems, products, and services from the outset. This principle encourages organizations to consider privacy implications at every stage, preventing the need for retroactive adjustments that may compromise user data. By embedding privacy into the design process, a foundation of trust is established, and potential privacy pitfalls are mitigated.</p>
+`;
+                    break;
+                case 4:
+                    content = `<h2>Module ${moduleNumber} -Mastering Strong Passwords</h2>
+                               <p>In today's digital age, where our lives are intertwined with technology, the importance of securing our online presence cannot be overstated. One of the fundamental pillars of digital security is mastering strong passwords. As cyber threats continue to evolve, individuals and organizations must prioritize the creation and maintenance of robust passwords to safeguard sensitive information and prevent unauthorized access.</p>
+                               
+                               <p>A strong password serves as the first line of defense against various cyber attacks, including hacking, identity theft, and data breaches. In essence, it acts as a virtual lock, protecting our personal and financial data from falling into the wrong hands. To master the art of strong passwords, it is crucial to understand the key components that make a password resilient against unauthorized attempts.</p>
+                               
+                               <p>First and foremost, length is a critical factor in password strength. The longer a password, the more challenging it becomes for attackers to crack. Aim for a minimum of 12 characters, incorporating a mix of uppercase and lowercase letters, numbers, and special characters. Avoid easily guessable information, such as birthdays, names, or common words, as these can be exploited through brute-force attacks or social engineering.</p>
+                               
+                               <p>Furthermore, uniqueness is paramount. Reusing passwords across multiple accounts is a common pitfall that can lead to catastrophic consequences. If one account is compromised, the attacker gains access to all other accounts using the same credentials. Adopting a unique password for each online service adds an extra layer of protection, preventing a domino effect in the event of a security breach.</p>
+                               
+                               <p>Regularly updating passwords is another key aspect of mastering strong passwords. Cybersecurity experts recommend changing passwords at least every three to six months, reducing the risk of unauthorized access over time. Implementing a routine password update not only strengthens security but also ensures that outdated credentials do not become vulnerabilities.</p>`;
+                    break;
+                case 5:
+                    content = `<h2>Module ${moduleNumber} - Essential Network Security</h2>
+                               <p>In an era defined by digital connectivity, network security stands as a paramount concern for individuals, businesses, and governments alike. The seamless exchange of information across networks has revolutionized the way we live and work, but it has also exposed us to a plethora of cyber threats. Essential network security is the linchpin that ensures the integrity, confidentiality, and availability of data in this interconnected world.</p>
+                               
+                               <p>Network security encompasses a multifaceted approach to protect computer networks from unauthorized access, data breaches, and cyber attacks. At its core, it involves the implementation of robust measures to safeguard the confidentiality and integrity of sensitive information while ensuring that network services remain accessible to legitimate users. Several key components contribute to the foundation of essential network security.</p>
+                               
+                               <p>Firewalls serve as the first line of defense against unauthorized access to a network. Acting as a barrier between a trusted internal network and untrusted external networks, firewalls analyze and control incoming and outgoing network traffic based on predetermined security rules. These rules are designed to allow or block specific data packets, preventing malicious entities from exploiting vulnerabilities in the network.</p>
+                               
+                               <p>Encryption is a critical aspect of network security that focuses on securing data during transmission. By converting information into a coded format that can only be deciphered by authorized parties possessing the decryption key, encryption ensures that even if intercepted, the data remains unreadable to unauthorized individuals. This is particularly crucial for protecting sensitive information such as financial transactions, personal details, and corporate communications.</p>
+                               
+                               <p>Access control mechanisms are indispensable in regulating user permissions within a network. Through the use of usernames, passwords, and other authentication methods, access control ensures that only authorized individuals gain entry to specific network resources. Implementing the principle of least privilege, which restricts users to the minimum level of access necessary for their tasks, further mitigates the risk of unauthorized access.</p>`;
+                    break;
+                case 6:
+                    content=`
+                    <h2>Cyber Mastery 101 - Multiple Choice Questions</h2>
+                    <form id="networkSecurityQuiz" action="submit_quiz.php" method="post"><ol>
+            <li>
+                <p>What is the primary function of a firewall in network security?</p>
+                <label><input type="radio" name="q1" value="a"> Encrypt data transmission</label><br>
+                <label><input type="radio" name="q1" value="b"> Monitor network activities</label><br>
+                <label><input type="radio" name="q1" value="c"> Regulate incoming and outgoing traffic</label><br>
+                <label><input type="radio" name="q1" value="d"> Provide user authentication</label><br>
+            </li>
+
+            <li>
+                <p>What does encryption in network security primarily aim to achieve?</p>
+                <label><input type="radio" name="q2" value="a"> Prevent unauthorized access</label><br>
+                <label><input type="radio" name="q2" value="b"> Monitor network activities</label><br>
+                <label><input type="radio" name="q2" value="c"> Regulate incoming and outgoing traffic</label><br>
+                <label><input type="radio" name="q2" value="d"> Facilitate user authentication</label><br>
+            </li>
+
+            <li>
+                <p>What is the principle of least privilege in access control?</p>
+                <label><input type="radio" name="q3" value="a"> Granting maximum access to all users</label><br>
+                <label><input type="radio" name="q3" value="b"> Restricting users to minimum necessary access</label><br>
+                <label><input type="radio" name="q3" value="c"> Allowing access without authentication</label><br>
+                <label><input type="radio" name="q3" value="d"> Providing access only during specific hours</label><br>
+            </li>
+
+            <li>
+                <p>What is the purpose of software updates and patch management in network security?</p>
+                <label><input type="radio" name="q4" value="a"> Encrypt data transmission</label><br>
+                <label><input type="radio" name="q4" value="b"> Prevent unauthorized access</label><br>
+                <label><input type="radio" name="q4" value="c"> Address vulnerabilities and security flaws</label><br>
+                <label><input type="radio" name="q4" value="d"> Monitor network activities</label><br>
+            </li>
+
+            <li>
+                <p>What do Intrusion Detection Systems (IDS) primarily do?</p>
+                <label><input type="radio" name="q5" value="a"> Prevent unauthorized access</label><br>
+                <label><input type="radio" name="q5" value="b"> Monitor network activities</label><br>
+                <label><input type="radio" name="q5" value="c"> Encrypt data transmission</label><br>
+                <label><input type="radio" name="q5" value="d"> Provide user authentication</label><br>
+            </li>
+
+            <li>
+                <p>How does network segmentation contribute to security?</p>
+                <label><input type="radio" name="q6" value="a"> Combining all networks into one</label><br>
+                <label><input type="radio" name="q6" value="b"> Isolating network segments to limit the impact of security breaches</label><br>
+                <label><input type="radio" name="q6" value="c"> Providing unlimited access to all users</label><br>
+                <label><input type="radio" name="q6" value="d"> Allowing unrestricted lateral movement within the network</label><br>
+            </li>
+
+            <li>
+                <p>What is the significance of user education in network security?</p>
+                <label><input type="radio" name="q7" value="a"> Monitoring network activities</label><br>
+                <label><input type="radio" name="q7" value="b"> Preventing unauthorized access</label><br>
+                <label><input type="radio" name="q7" value="c"> Reducing the impact of security breaches</label><br>
+                <label><input type="radio" name="q7" value="d"> Mitigating human errors and social engineering attacks</label><br>
+            </li>
+
+            <li>
+                <p>What is the primary role of Intrusion Prevention Systems (IPS)?</p>
+                <label><input type="radio" name="q8" value="a"> Monitor network activities</label><br>
+                <label><input type="radio" name="q8" value="b"> Encrypt data transmission</label><br>
+                <label><input type="radio" name="q8" value="c"> Detect and actively prevent unauthorized access and attacks</label><br>
+                <label><input type="radio" name="q8" value="d"> Provide user authentication</label><br>
+            </li>
+
+            <li>
+                <p>Why is access control important in network security?</p>
+                <label><input type="radio" name="q9" value="a"> To provide unlimited access to all users</label><br>
+                <label><input type="radio" name="q9" value="b"> To restrict users to minimum necessary access</label><br>
+                <label><input type="radio" name="q9" value="c"> To encrypt data transmission</label><br>
+                <label><input type="radio" name="q9" value="d"> To monitor network activities</label><br>
+            </li>
+
+            <li>
+                <p>Which of the following is NOT a component of essential network security?</p>
+                <label><input type="radio" name="q10" value="a"> Firewalls</label><br>
+                <label><input type="radio" name="q10" value="b"> Encryption</label><br>
+                <label><input type="radio" name="q10" value="c"> Network Segmentation</label><br>
+                <label><input type="radio" name="q10" value="d"> Data Backup</label><br>
+            </li>
+        </ol>
+        <input type="submit" value="Submit Quiz">
+    </form>
+ `;
+ break;
+                default:
+                    content = `<h2>No content available for Module ${moduleNumber}.</h2>`;
+            }
+
+            moduleContent.innerHTML = content;
+        }
+    </script>
+</body>
+</html>

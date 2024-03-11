@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invalid Email or Password</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        p {
+            color: #777;
+        }
+
+        button {
+            display: inline-block;
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Invalid Email or Password</h2>
+        <p>Please check your email and password and try again.</p>
+
+        <button onclick="goToLogin()">Back to Login</button>
+        <button onclick="goToForgotPassword()">Forgot Password</button>
+        <!-- <button onclick="goToRegister()">Register</button> -->
+    </div>
+
+    <script>
+        function goToLogin() {
+            // Add code to redirect to the login page
+            window.location.href = "/sign";
+        }
+
+        function goToForgotPassword() {
+            // Add code to redirect to the forgot password page
+            window.location.href = "/reset";
+        }
+
+        // function goToRegister() {
+        //     // Add code to redirect to the register page
+        //     window.location.href = "register.ejs"; }
+        
+    </script>
+</body>
+</html>

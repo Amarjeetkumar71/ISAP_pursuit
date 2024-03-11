@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutor Dashboard</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #81c784; /* Light green background color */
+            padding: 40px; /* Increased padding for a bigger card */
+            border-radius: 12px; /* Rounded corners */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            width: 800px; /* Increased width for a bigger card */
+            text-align: center; /* Center text content */
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px; /* Increased margin for separation */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input[type="file"] {
+            width: 60%; /* Reduced width for the file input */
+            padding: 8px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            display: inline-block; /* Inline display for side-by-side positioning */
+        }
+
+        button {
+            background-color: #1976d2; /* Dark blue button color */
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 35%; /* Reduced width for the button */
+            display: inline-block; /* Inline display for side-by-side positioning */
+        }
+
+        button:hover {
+            background-color: #1565c0; /* Darker shade of blue on hover */
+        }
+    </style>
+</head>
+<body>
+    <form action="/course_upload" method="post" enctype="multipart/form-data">
+        <h1>Add Course</h1>
+
+        <label for="courseFile">Select .json file:</label>
+        <input type="file" name="courseFile" accept=".json" required>
+
+        <button type="submit">Upload Course</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutor Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    
+
+    <form action="/tutor_register" method="post" id="tutorForm">
+        <h2>Tutor Registration</h2>
+        
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" name="fullName" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="subject">Teaching Subject:</label>
+        <input type="text" id="subject" name="subject" required>
+
+        <label for="experience">Teaching Experience (in years):</label>
+        <input type="number" id="experience" name="experience" required>
+
+        <label for="qualification">Qualification:</label>
+        <input type="text" id="qualification" name="qualification" required>
+
+        <label for="availability">Availability:</label>
+        <select id="availability" name="availability" required>
+            <option value="fullTime">Full Time</option>
+            <option value="partTime">Part Time</option>
+            <option value="flexible">Flexible</option>
+        </select>
+
+        <button type="submit" ">Submit</button>
+    </form>
+
+    <script>
+        function submitForm() {
+            window.location.href="/tutor_register";
+        }
+    </script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Upload Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .message-box {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="message-box">
+        <p>Your course uploaded successfully!</p>
+        <p>Wait for admin approval. You will be notified via email after approval.</p>
+    </div>
+    <button class="logout-button" onclick="upload()">Upload Another Course</button>
+    <button class="logout-button" onclick="logout()">Logout</button>
+    <!-- <button class="back-button" onclick="goBack()">Back</button> -->
+
+    <script>
+        function logout() {
+            // Add your logout logic here
+           // alert('Logout button clicked');
+           //window.location.href("index.ejs");
+           window.location.href="/";
+        }
+
+        function upload() {
+            // Add your back button logic here
+            window.location.href="/reupload";
+        }
+    </script>
+</body>
+</html>

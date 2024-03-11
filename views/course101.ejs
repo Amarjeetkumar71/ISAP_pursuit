@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 20%;
+            background-color: #3498db;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .sidebar h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .sidebar h2 {
+            color: #fff;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            cursor: pointer;
+            padding: 10px;
+            margin-bottom: 5px;
+            background-color: #2980b9;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar li:hover {
+            background-color: #2c3e50;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #3498db;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+        .progress-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .progress-bar {
+            background-color: #4CAF50;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            color: #fff;
+            position: fixed;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .mark-as-read-btn {
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .mark-as-read-btn:hover {
+            background-color: #45a049;
+        }
+
+        .module-content {
+            position: relative;
+        }
+
+        .next-module-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .next-module-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+    <title>Course Website</title>
+</head>
+
+<body>
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar">0%</div>
+    </div>
+    <div class="container">
+        
+        <div class="sidebar">
+            <h1>Information Security 101</h1>
+            <ul id="moduleList">
+                <li id="module1" onclick="loadModule(1)">Module 1</li>
+                <li id="module2" onclick="loadModule(2)" class="disabled">Module 2</li>
+                <li id="module3" onclick="loadModule(3)" class="disabled">Module 3</li>
+                <li id="module4" onclick="loadModule(4)" class="disabled">Module 4</li>
+                <li id="module5" onclick="loadModule(5)" class="disabled">Module 5</li>
+                <li id="module6" onclick="loadModule(6)" class="disabled">Attempt Quiz</li>
+            </ul>
+            
+         </div>
+           
+         
+    
+
+        
+        
+        <div class="content" id="moduleContent">
+            
+            <!-- <button class="mark-as-read-btn" onclick="markAsRead()">Mark as Read</button> -->
+            <div class="module-content">
+                <div id="moduleContentInner"></div>
+                <div>
+                <!-- <button class="next-module-btn" onclick="loadNextModule()">Next Module</button> -->
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let completedModules = [];
+        let currentModule = 1;
+
+        function loadModule(moduleNumber) {
+            if (moduleNumber > currentModule) {
+                alert('Complete the previous module first.');
+                return;
+            }
+
+            const moduleContentInner = document.getElementById('moduleContentInner');
+            let content = '';
+
+            switch (moduleNumber) {
+                case 1:
+                    content = `<h2>Module ${moduleNumber} - Information Security for Digital and Official Assets</h2>
+                    <p><strong>What is Information Security for Digital and Official Assets?</strong></p>
+                    <p>Information security involves protecting digital and official assets from unauthorized access, use, disclosure, disruption, modification, or destruction. It's vital for maintaining confidentiality, integrity, and availability.</p>
+                    <ul>
+                        <li><strong>How to secure Digital Assets:</strong>
+                            <ol><li>Encrypt sensitive data.</li>
+                                <li>Use strong access controls.</li>
+                                <li>Employ network security measures.</li>
+                                <li>Regularly update software for vulnerability mitigation.</li>
+                                <li>Explore emerging technologies like blockchain and AI for enhanced security.</li>
+                            </ol>
+                        </li>
+                        <br>
+                        <li><strong>How to secure Official Assets:</strong>
+                            <ol><li>Establish policies for physical document security.</li>
+                                <li>Control access to confidential information. </li>
+                                <li>Utilize document management systems. </li>
+                                <li>Ensure compliance with industry regulations and data protection laws. </li>
+                            </ol>
+                        </li>
+                        <br>
+                        <li><strong>Incident Response and Disaster Recovery: </strong>
+                            <ol><li>Develop incident response plans. </li>
+                                <li>Implement data backup and recovery strategies. </li>
+                                <li>Conduct regular testing and updates. </li>
+                                <li>Ensure minimal disruption to operations during incidents. </li>
+                            </ol>
+                        </li>
+                        <br>
+                        <li><strong>Employee Training and Awareness: </strong>
+                            <ol><li>Educate employees on security best practices. </li>
+                                <li>Conduct regular training sessions. </li>
+                                <li>Promote employee engagement in security initiatives. </li>
+                            </ol>
+                        </li>
+                        <br>
+                        <li><strong>Conclusion and Best Practices: </strong>
+                            <ol><li>Continuously monitor and improve security measures. </li>
+                                <li>Establish a robust security framework. </li>
+                                <li>Foster a security-conscious organizational culture.</li>
+                            </ol>
+                        </li>
+                    </ul>
+                    <br>
+                        <button class="mark-as-read-btn" onclick="markAsRead()">Mark as Read</button>
+                        <button class="next-module-btn" onclick="loadNextModule()">Next Module</button>`;
+                    break;
+                case 2:
+                    content = `<h2>Module ${moduleNumber} - Phishing and Its Types</h2>
+                    <p><strong>What is Phishing?</strong></p>
+                    <p>Phishing is a type of cyber attack where attackers impersonate legitimate entities to deceive individuals into divulging sensitive information such as passwords, financial details, or personal data. It can have severe consequences for both individuals and organizations, including financial loss, identity theft, and compromised systems.</p>
+                    <section>
+                         <h4>1. Types of Phishing Attacks: </h4>
+                         <ul>
+                            <li><strong>Email Phishing:</strong> Uses deceptive emails to trick recipients into clicking on malicious links or providing sensitive information. </li>
+                            <li><strong>Spear Phishing:</strong> Targets specific individuals or groups with personalized messages to increase the likelihood of success. </li>
+                            <li><strong>Pharming:</strong> Redirects users to malicious websites through DNS manipulation. </li>
+                         </ul>
+                    </section>
+                    <section>
+                         <h4>2. Tactics and Strategies Used in Phishing: </h4>
+                         <ul>
+                            <li><strong>Deceptive email techniques:</strong> Spoofing, social engineering, and urgency appeals are common tactics used to deceive recipients.</li>
+                            <li><strong>Social engineering tactics:</strong> Manipulation techniques exploit psychological vulnerabilities to trick individuals into revealing sensitive information. </li>
+                            <li><strong>Malicious website impersonation:</strong> Fake websites mimic legitimate ones to steal login credentials and personal information. </li>
+                         </ul>
+                    </section>
+                    <section>
+                         <h4>3. Detecting and Preventing Phishing Attacks: </h4>
+                         <ul>
+                            <li><strong>Email security best practices:</strong> Use email filtering, authentication protocols, and sender verification techniques to block phishing emails.</li> 
+                            <li><strong>User awareness training:</strong> Educate users on recognizing phishing signs and how to respond to suspicious emails.</li>
+                            <li><strong>Security software:</strong> Anti-phishing tools and solutions detect and prevent attacks at the network and endpoint levels.</li>
+                            <li><strong>Multi-factor authentication (MFA): </strong>Adds an extra layer of security to mitigate the risk of unauthorized access in case of compromised credentials.</li>
+                         </ul> 
+                    </section>
+                    <section>
+                        <h4>4. Conclusion and Best Practices: </h4>
+                        <ul>
+                            <li>Stay vigilant against phishing attacks.</li>
+                            <li>Educate yourself and your team. </li>
+                            <li>Implement technical controls and security measures.</li>
+                            <li>Have incident response procedures in place. </li>
+                            <li>Continuous education and awareness are crucial for effective defense against phishing threats. </li>
+                        </ul>
+                    </section>
+                    <br>
+                    <button class="mark-as-read-btn" onclick="markAsRead()">Mark as Read</button>
+                    <button class="next-module-btn" onclick="loadNextModule()">Next Module</button>`;
+                    break;
+                case 3:
+                    content = `<h2>Module ${moduleNumber} - CIA Triad</h2>
+                    <p><strong>What is the CIA Triad in Information Security?</strong> </p>
+                    <p>The three letters in "CIA triad" stand for Confidentiality, Integrity, and Availability. The CIA triad is a common model that forms the basis for the development of security systems. They are used for finding vulnerabilities and methods for creating solutions.The confidentiality, integrity, and availability of information is crucial to the operation of a business, and the CIA triad segments these three ideas into separate focal points. This differentiation is helpful because it helps guide security teams as they pinpoint the different ways in which they can address each concern.Ideally, when all three standards have been met, the security profile of the organization is stronger and better equipped to handle threat incidents.</p>
+<ul>
+    <li><p><strong>Confidentiality</strong></p>
+       <ul>
+          <li>It involves the efforts of an organization to make sure data is kept secret or private.</li>
+          <li>It involves safeguarding sensitive data, such as personal, financial, or proprietary information, from unauthorized disclosure.</li>
+          <li>Maintaining confidentiality is often a legal and ethical obligation, especially when dealing with personal or confidential business information.</li>
+          <li>Confidentiality is crucial for building trust, both between individuals and organizations and between clients and service providers.</li>
+       </ul>
+    </li>
+    <li><p><strong>Integrity</strong></p>
+       <ul><li>Being truthful and transparent in all actions and communications. Avoiding deception or misleading behavior.</li>
+           <li>Demonstrating a stable and unchanging set of principles and values. Acting in a manner that aligns with stated beliefs and commitments.</li>
+           <li>Taking responsibility for one's actions and their consequences. Acknowledging mistakes and working to rectify them.</li>
+           <li>Adhering to a set of ethical standards. Avoiding actions that could compromise moral principles.</li>
+      </ul>
+    </li>
+    <li><p><strong>Availability</strong></p>
+      <ul><li>Refers to the assurance that information and resources are accessible and usable when needed by authorized individuals.</li>
+          <li>Ensures that systems and data are reliably and promptly available for legitimate users.</li>
+          <li>Involves measures to prevent or minimize disruptions, downtime, or outages, ensuring continuous access to information and services.</li>
+          <li>Strategies to enhance availability may include redundancy, failover mechanisms, backups, and disaster recovery plans.</li>
+      </ul>
+    </li>
+</ul>
+<br>
+
+                        <button class="mark-as-read-btn" onclick="markAsRead()">Mark as Read</button>
+                        <button class="next-module-btn" onclick="loadNextModule()">Next Module</button>`;
+                    break;
+                case 4:
+                    content = `<h2>Module ${moduleNumber} - Business Continuity Program</h2>
+                    <p><strong>What is BCP?</p></strong>
+                    <p>A Business Continuity Program (BCP) is a strategic framework implemented by organizations to ensure the resilience and uninterrupted operation of critical business functions in the face of unforeseen disruptions. In the realm of  information security, a Business Continuity Program specifically focuses on safeguarding digital assets, data, and IT infrastructure to minimize the impact of potential incidents on the organization's operations.</p>
+                    <p>Key features of a Business Continuity Program in the information security field include:</p>
+                    <ol>
+                        <li> <strong>Risk Assessment and Analysis:</strong>
+                            <ul><li>Identify potential threats and vulnerabilities to information security.</li>
+                                <li>Assess the likelihood and potential impact of various security incidents.</li>
+                            </ul>
+                        </li>
+                        <br>
+                        <li><strong>Business Impact Analysis (BIA):</strong>
+                            <ul><li>Evaluate the criticality of information assets and IT systems to business operations.</li>
+                                <li>Prioritize resources and efforts based on the potential impact on the organization.</li>
+                            </ul>
+                        </li>
+                        <br>
+                        <li><strong>Incident Response Planning:</strong>
+                            <ul><li>Develop comprehensive plans to respond to various information security incidents.</li>
+                                <li>Define roles, responsibilities, and communication protocols during incidents.</li>
+                            </ul>
+                        </li>
+                        <br>
+                        <li><strong>Backup and Recovery Strategies:</strong>
+                            <ul><li>Implement regular data backups and establish recovery procedures.</li>
+                                <li>Ensure the availability of critical data in the event of data loss or system failures.</li>
+                            </ul>
+                        </li>
+                        <br>
+                        <li><strong>Redundancy and Failover Mechanisms:</strong>
+                            <ul><li>Employ redundancy measures and failover systems to maintain continuous operations.</li>
+                                <li>Design IT architectures with built-in resilience to minimize downtime.</li>
+                            </ul>
+                        </li>
+                        <br>
+                        <li><strong>Employee Training and Awareness:</strong>
+                            <ul><li>Educate employees on information security best practices.</li>
+                                <li>Foster a culture of security awareness to mitigate human-related risks.</li>
+                            </ul>
+                        </li>
+                        <br>
+                        <li><strong>Communication Plans:</strong>
+                            <ul><li>Develop communication strategies for internal and external stakeholders.</li>
+                                <li>Ensure transparent and timely communication during and after security incidents.</li>
+                            </ul>
+                        </li>
+                        <br>
+                        <li><strong>Regular Testing and Exercises:</strong>
+                            <ul><li>Conduct periodic drills and simulations to test the effectiveness of the BCP.</li>
+                                <li>Identify weaknesses and areas for improvement through realistic scenarios.</li>
+                            </ul>
+                        </li>
+                        <br>
+                        <li><strong>Continuous Monitoring and Improvement:</strong>
+                            <ul><li>Implement continuous monitoring of information security measures.</li>
+                                <li>Regularly review and update the Business Continuity Program based on emerging threats and changing business needs</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    <br>
+                        <button class="mark-as-read-btn" onclick="markAsRead()">Mark as Read</button>
+                        <button class="next-module-btn" onclick="loadNextModule()">Next Module</button>`;
+                    break;
+                case 5:
+                    content = `<h2>Module ${moduleNumber} - Information Security Frameworks</h2>
+                    <ol>
+                        <li><strong>What is COBIT, and how does it contribute to information security?</strong>
+                            <p>COBIT Overview:</p>
+                            <ul>
+                                <li><strong>Comprehensive Framework:</strong> COBIT (Control Objectives for Information and Related Technologies) is a comprehensive framework developed by ISACA (Information Systems Audit and Control Association) for governing and managing enterprise IT.</li>
+                                <li><strong>Four Domains:</strong> It is organized into four domains: Plan and Organize, Acquire and Implement, Deliver and Support, and Monitor and Evaluate.</li>
+                                <li><strong>Process-Oriented:</strong> COBIT is process-oriented, providing a structured approach to aligning IT with business goals.</li>
+                            </ul>
+                            <p>COBIT's Role in Information Security:</p>
+                            <ul>
+                                <li><strong>Risk Management Integration:</strong> COBIT integrates risk management and control practices, offering a holistic approach to information security.</li>
+                                <li><strong>Governance Enhancement:</strong> It enhances governance, ensuring that IT processes align with business objectives.</li>
+                            </ul>
+                        </li>
+                        <br>
+                        <li><strong>What are the core functions of the NIST Cybersecurity Framework?</strong>
+                            <p>NIST Cybersecurity Framework:</p>
+                            <ul><li><strong>Development Authority:</strong> The NIST (National Institute of Standards and Technology) Cybersecurity Framework is a set of voluntary guidelines developed by NIST to improve cybersecurity practices.</li>
+                                <li><strong>Five Core Functions:</strong>
+                                    <ul><li><strong>Identify:</strong> Understand and manage cybersecurity risks.</li>
+                                        <li><strong>Protect:</strong> Implement safeguards to ensure the delivery of critical services.</li>
+                                        <li><strong>Detect:</strong> Implement activities to identify the occurrence of a cybersecurity event.</li>
+                                        <li><strong>Respond:</strong> Develop and implement a response plan.</li>
+                                        <li><strong>Recover:</strong> Ensure timely recovery and restoration of capabilities.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <p>Flexibility and Applicability:</p>
+                            <ul><li><strong>Adaptable Approach:</strong> The framework offers a flexible risk management approach that can be adapted for use across diverse sectors and organizational sizes.</li></ul>
+                        </li>
+                        <br>
+                        <li><strong>What are the advantages and challenges associated with hybrid or custom information security frameworks?</strong>
+                            <p>Advantages of Hybrid Frameworks:</p>
+                            <ul><li><strong>Flexibility:</strong> Hybrid frameworks offer flexibility, allowing organizations to tailor security measures to their specific needs.</li>
+                                <li><strong>Alignment with Objectives:</strong> They align with organizational objectives, accommodating unique requirements.</li>
+                            </ul>
+                            <p>Challenges of Custom Frameworks:<p>
+                                 <ul><li><strong>Creation and Maintenance:</strong> Developing and maintaining custom frameworks can be complex and resource-intensive.</li>
+                                     <li><strong>Strategies for Overcoming Challenges:</strong> Organizations need strategies to overcome challenges, such as adopting an iterative approach and leveraging industry best practices.</li>
+                                </ul>
+                            <p>Iterative Nature:</p>
+                                <ul><li><strong>Adaptation to Change:</strong> Hybrid frameworks have an iterative nature, enabling organizations to adapt to changing threats, technologies, and regulatory landscapes.</li></ul>
+                        </li>
+                        <br>
+                        <li><strong>How is the practical application of information security frameworks conducted?</strong>
+                            <p>Practical Application:</p>
+                            <ul>
+                                <li><strong>Comparative Analysis Exercise:</strong> Participants engage in a comparative analysis exercise, evaluating the strengths and weaknesses of different information security frameworks.</li>
+                                <li><strong>Case Studies:</strong> Case studies are presented showcasing successful implementation of diverse frameworks in real-world scenarios.</li>
+                                <li><strong>Learning Through Application:</strong> This practical approach allows participants to learn through application, gaining insights into the complexities and successes of information security frameworks.</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    <br>
+                    <button class="mark-as-read-btn" onclick="markAsRead()">Mark as Read</button>
+                    <button class="next-module-btn" onclick="loadNextModule()">Next Module</button>`;
+                    break;
+                case 6:
+                    content = `
+                        <h2>Information Security 101 - Multiple Choice Questions</h2>
+                        <h1><div id="timer">Time Left: <span id="countdown">05:00</span></div></h1>
+                        <form id="networkSecurityQuiz" action="/submit_quiz" method="post"><ol>
+            <li>
+                <p>What is the primary focus of a Business Continuity Program (BCP) in the context of information security?</p>
+                <label><input type="radio" name="q1" value="a"> Ensuring financial stability</label><br>
+                <label><input type="radio" name="q1" value="b"> Safeguarding digital assets, data, and IT infrastructure</label><br>
+                <label><input type="radio" name="q1" value="c"> Enhancing employee productivity</label><br>
+                <label><input type="radio" name="q1" value="d"> Expanding market share</label><br>
+            </li>
+
+            <li>
+                <p>Which key feature of a Business Continuity Program (BCP) involves assessing the criticality of information assets and prioritizing resources based on potential impact?</p>
+                <label><input type="radio" name="q2" value="a"> Risk Assessment and Analysis</label><br>
+                <label><input type="radio" name="q2" value="b"> Incident Response Planning</label><br>
+                <label><input type="radio" name="q2" value="c"> Business Impact Analysis (BIA)</label><br>
+                <label><input type="radio" name="q2" value="d"> Employee Training and Awareness</label><br>
+            </li>
+
+            <li>
+                <p>What does the CIA Triad stand for in Information Security?</p>
+                <label><input type="radio" name="q3" value="a"> Centralized Information Architecture</label></br>
+                <label><input type="radio" name="q3" value="b"> Central Intelligence Agency</label><br>
+                <label><input type="radio" name="q3" value="c"> Confidentiality, Integrity, and Availability</label><br>
+                <label><input type="radio" name="q3" value="d"> Critical Incident Analysis</label><br>
+            </li>
+
+            <li>
+                <p>Which component of the CIA Triad involves safeguarding sensitive data, such as personal, financial, or proprietary information, from unauthorized disclosure?</p>
+                <label><input type="radio" name="q4" value="a"> Integrity</label><br>
+                <label><input type="radio" name="q4" value="b"> Availability</label><br>
+                <label><input type="radio" name="q4" value="c"> Confidentiality</label><br>
+                <label><input type="radio" name="q4" value="d"> Redundancy</label><br>
+            </li>
+
+            <li>
+                <p>What is the primary focus of the "Integrity" aspect of the CIA Triad?</p>
+                <label><input type="radio" name="q5" value="a"> Being truthful and transparent in all actions and communications.</label><br>
+                <label><input type="radio" name="q5" value="b"> Safeguarding sensitive data from unauthorized disclosure.</label><br>
+                <label><input type="radio" name="q5" value="c"> Demonstrating a stable and unchanging set of principles and values.</label><br>
+                <label><input type="radio" name="q5" value="d"> Ensuring information and resources are accessible and usable.</label><br>
+            </li>
+
+            <li>
+                <p>What is the main goal of a "Phishing" attack?</p>
+                <label><input type="radio" name="q6" value="a"> Install malware on the victim's device</label><br>
+                <label><input type="radio" name="q6" value="b"> Impersonate legitimate entities and deceive individuals</label><br>
+                <label><input type="radio" name="q6" value="c"> Conduct denial-of-service attacks</label><br>
+                <label><input type="radio" name="q6" value="d"> Manipulate search engine results</label><br>
+            </li>
+
+            <li>
+                <p>Which type of Phishing attack uses deceptive emails to trick recipients into clicking on malicious links or providing sensitive information?</p>
+                <label><input type="radio" name="q7" value="a"> Spear Phishing</label><br>
+                <label><input type="radio" name="q7" value="b"> Pharming</label><br>
+                <label><input type="radio" name="q7" value="c"> Email Phishing</label><br>
+                <label><input type="radio" name="q7" value="d"> Malicious Website Impersonation</label><br>
+            </li>
+
+            <li>
+                <p>How does Spear Phishing differ from Email Phishing?</p>
+                <label><input type="radio" name="q8" value="a"> Spear Phishing uses deceptive emails, while Email Phishing targets specific individuals.</label><br>
+                <label><input type="radio" name="q8" value="b"> Email Phishing targets specific individuals, while Spear Phishing uses deceptive emails.</label><br>
+                <label><input type="radio" name="q8" value="c"> Both are the same and can be used interchangeably.</label><br>
+                <label><input type="radio" name="q8" value="d"> Spear Phishing involves denial-of-service attacks, while Email Phishing does not.</label><br>
+            </li>
+
+            <li>
+                <p>What does the term "phishing attempts" refer to in the context of employee training and awareness?</p>
+                <label><input type="radio" name="q9" value="a"> Encrypting sensitive data</label><br>
+                <label><input type="radio" name="q9" value="b"> Managing official assets digitally</label><br>
+                <label><input type="radio" name="q9" value="c"> Deceptive emails trying to trick individuals</label><br>
+                <label><input type="radio" name="q9" value="d"> Utilizing document management systems</label><br>
+            </li>
+
+            <li>
+                <p>Which emerging technologies are suggested for added security measures in securing digital assets?</p>
+                <label><input type="radio" name="q10" value="a"> Establishing physical document security policies</label><br>
+                <label><input type="radio" name="q10" value="b"> Using strong access controls</label><br>
+                <label><input type="radio" name="q10" value="c"> Blockchain and AI</label><br>
+                <label><input type="radio" name="q10" value="d"> Regularly updating software</label><br>
+            </li>
+        </ol>
+        <input type="submit" class="mark-as-read-btn" value="Submit Quiz">
+    </form>`;
+                    break;
+                default:
+                    content = `<h2>No content available for Module ${moduleNumber}.</h2>`;
+            }
+
+            moduleContentInner.innerHTML = content;
+            updateProgressBar();
+            updateModuleList();
+            showNextModuleButton();
+        }
+
+        function markAsRead() {
+            if (!completedModules.includes(currentModule)) {
+                completedModules.push(currentModule);
+                updateProgressBar();
+                updateModuleList();
+                showNextModuleButton();
+            }
+        }
+
+        function showNextModuleButton() {
+            const nextModuleBtn = document.querySelector('.next-module-btn');
+            nextModuleBtn.style.display = 'block';
+        }
+
+        function loadNextModule() {
+            if (currentModule < completedModules.length + 1) {
+                currentModule++;
+                loadModule(currentModule);
+            }
+        }
+
+        function updateProgressBar() {
+            const progressBar = document.getElementById('progressBar');
+            const moduleList = document.getElementById('moduleList');
+            const progress = (completedModules.length / moduleList.children.length) * 100;
+            progressBar.style.width = progress + '%';
+            progressBar.innerHTML = progress.toFixed(0) + '%';
+        }
+
+        function updateModuleList() {
+            const moduleList = document.getElementById('moduleList');
+            for (let i = 1; i <= moduleList.children.length; i++) {
+                const moduleItem = document.getElementById(`module${i}`);
+                moduleItem.classList.remove('active', 'disabled');
+                if (completedModules.includes(i)) {
+                    moduleItem.classList.add('active');
+                } else {
+                    moduleItem.classList.add('disabled');
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateModuleList();
+        });
+
+        let timeLeft = 600;
+
+    // Function to update the timer display
+    function updateTimer() {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      document.getElementById('countdown').innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    // Function to decrement the timer and submit the form when the time is up
+    function countdown() {
+      if (timeLeft > 0) {
+        timeLeft--;
+        updateTimer();
+      } else {
+        // Time is up, submit the form
+        document.getElementById('networkSecurityQuiz').submit();
+      }
+    }
+
+    // Update the timer every second
+    const timerInterval = setInterval(countdown, 1000);
+    </script>
+</body>
+
+</html>
