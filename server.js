@@ -40,7 +40,7 @@ const hashPassword = (password) => {
 
 const secretKey = 'your-secret-key';
 app.use(express.static(path.join(__dirname, 'public')));    //builtin middleware to allow to use all file in public
-app.use(express.static(path.join(__dirname, 'views')));    //builtin middleware to allow to use all file in public
+ app.use(express.static(path.join(__dirname, 'views')));    //builtin middleware to allow to use all file in public
 
 
 app.use(express.json());
@@ -139,9 +139,8 @@ app.get('/admin_login', (req, res) => {
 
 app.get("/", (req, res) => {
   console.log("Home page entered");
-  res.render("index");
-  //res.redirect("/register.ejs");
-  //res.send("hello jee");
+  
+  res.sendFile(path.join(__dirname, "index.html"));
 
 });
 // to refer on sign page
