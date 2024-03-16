@@ -139,8 +139,9 @@ app.get('/admin_login', (req, res) => {
 
 app.get("/", (req, res) => {
   console.log("Home page entered");
-  
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname,"index.html"));
+  //res.redirect("/register.ejs");
+  //res.send("hello jee");
 
 });
 // to refer on sign page
