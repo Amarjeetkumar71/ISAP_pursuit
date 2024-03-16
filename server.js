@@ -40,6 +40,8 @@ const hashPassword = (password) => {
 
 const secretKey = 'your-secret-key';
 app.use(express.static(path.join(__dirname, 'public')));    //builtin middleware to allow to use all file in public
+app.use(express.static(path.join(__dirname, 'views')));    //builtin middleware to allow to use all file in public
+
 
 app.use(express.json());
 app.use(cookie());
