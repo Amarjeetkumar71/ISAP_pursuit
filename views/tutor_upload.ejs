@@ -55,6 +55,7 @@
             cursor: pointer;
             width: 35%; /* Reduced width for the button */
             display: inline-block; /* Inline display for side-by-side positioning */
+            margin-right: 10px; /* Added margin for separation */
         }
 
         button:hover {
@@ -63,13 +64,43 @@
     </style>
 </head>
 <body>
-    <form action="/course_upload" method="post" enctype="multipart/form-data">
+    <form id="courseUploadForm" method="post" enctype="multipart/form-data">
         <h1>Add Course</h1>
 
         <label for="courseFile">Select .json file:</label>
         <input type="file" name="courseFile" accept=".json" required>
 
         <button type="submit">Upload Course</button>
+
+        <!-- Button to redirect to localhost:4600/tutor_course -->
+        <button id="existingCoursesButton">My Existing Courses</button>
     </form>
+
+    <script>
+        // Get the form element
+        const form = document.getElementById('courseUploadForm');
+        const email = '<%= email %>';
+        
+        // Add event listener to the button
+        document.getElementById('existingCoursesButton').addEventListener('click', function() {
+            // Redirect to localhost:4600/tutor_course
+            window.location.href = `http://localhost:4600/tutor_course?email=${email}`;
+        });
+
+        // Add an event listener to the form submission
+        form.addEventListener('submit', function(event) {
+            // Prevent the default form submission
+            event.preventDefault();
+            
+            // Construct the action URL with the tutor email as a query parameter
+            const actionUrl = `/course_upload?email=${encodeURIComponent(email)}`;
+            
+            // Set the action of the form to the constructed URL
+            form.action = actionUrl;
+            
+            // Submit the form
+            form.submit();
+        });
+    </script>
 </body>
 </html>

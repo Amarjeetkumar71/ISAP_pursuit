@@ -5,6 +5,7 @@ const userRouter = require("./api/users/user.router");   // to use router module
 const courseRouter = require("./api/course/course.route");
 const multer = require('multer');
 const mongoose = require('mongoose');
+const crypto = require('crypto');
 const connectDB = require('./config/mongo');
 const mailer = require('./mail');
 
@@ -19,7 +20,6 @@ app.use(express.json());
 const connection = require("./config/db");       // need to acces db.js file
 const cookie = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-const { Console } = require("console");
 
 connectDB();
 const storage = multer.memoryStorage();
@@ -27,18 +27,24 @@ const upload = multer({ storage: storage });
 const courseSchema = new mongoose.Schema({
   course: Object,
   modules: Object,
-  quiz: Object
+  quiz: Object,
+  tutor_email: String,
 });
+
 const Course = mongoose.model('Course', courseSchema);
 
+const hashPassword = (password) => {
+  const hash = crypto.createHash('sha256').update(password).digest('hex');
+  return hash;
+};
 
 const secretKey = 'your-secret-key';
 app.use(express.static(path.join(__dirname, 'public')));    //builtin middleware to allow to use all file in public
 
-//app.use("/api/users", userRouter);   //foward my url start from api/users/ to UserRout
+app.use("/api/users", userRouter);   //foward my url start from api/users/ to UserRout
 app.use(express.json());
 app.use(cookie());
-//app.use("/api/course", courseRouter);
+app.use("/api/course", courseRouter);
 
 // Middleware function for authentication
 function authenticate(req, res, next) {
@@ -61,18 +67,19 @@ function authenticate(req, res, next) {
 app.post('/login', (req, res) => {
   try {
     const { email, password } = req.body;
+    let hashPwd = hashPassword(password);
     // Check the user credentials against the MySQL database
-    const query = 'SELECT * FROM users WHERE email = $1 AND password = $2';
+    const query = 'SELECT * FROM users WHERE email = $1';
 
-    connection.query(query, [email, password], (err, results) => {
+    connection.query(query, [email], (err, results) => {
       if (err) {
         console.error('Error querying database:', err);
         return res.status(500).json({ message: 'Internal Server Error' });
       }
-      console.log(err, 'err', results.rows);
+      console.log(err);
       results = results.rows;
       // Check if a user with the provided credentials exists
-      if (results.length === 0) {
+      if (results.length === 0 || results[0].password !== hashPwd) {
         //return res.status(401).json({ message: 'Invalid credentials' });
         res.render("invalid_id.ejs");
       }
@@ -81,10 +88,28 @@ app.post('/login', (req, res) => {
         const user = results[0];
         //console.log(user);
         let user_name = (user.firstname);
-        console.log(user_name);
+
         // Render the course.ejs template and pass user information
         res.render('course_2', { user_name });
       }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.get('/tutor_course', (req, res) => {
+  try {
+    const { email } = req.query;
+    const query = 'SELECT * FROM tutor_approved_list WHERE email = $1';
+    connection.query(query, [email], (err, results) => {
+      if (err) {
+        console.error('Error querying database:', err);
+        return res.status(500).json({ message: 'Internal Server Error' });
+      }
+      results = results.rows;
+      let user_name = (results[0].firstname);
+      res.render('course_22', { user_name, email });
     });
   } catch (err) {
     console.log(err);
@@ -140,6 +165,11 @@ app.get("/admin", (req, res) => {
   res.redirect("/admin.html");
 });
 
+app.post('/contact', (req, res) => {
+  mailer.sendmailForContactUs('akmishra6614@gmail.com', 'amarjeet_k@pursuitsoftware.biz', req.body);
+  res.render('contact_response');
+});
+
 app.post("/upload-course", (req, res) => {
   res.render("upload_msg");
 });
@@ -156,7 +186,7 @@ app.post('/submit_quiz', (req, res) => {
   const userAnswers = req.body;
 
   // Define the correct answers and corresponding marks
-  const correctAnswers = {
+  /*const correctAnswers = {
     q1: 'b',
     q2: 'c',
     q3: 'c',
@@ -186,6 +216,8 @@ app.post('/submit_quiz', (req, res) => {
     //res.redirect('/fail'); // Redirect to a fail page
     res.render('fail', { marks: totalMarks });
   }
+  */
+
 });
 
 app.post("/create", (req, res) => {
@@ -215,7 +247,7 @@ app.post("/register_user_data", (req, res) => {
   var l_name = req.body.lastname;
   var email = req.body.email;
   var pass = req.body.password;
-
+  const hashPwd = hashPassword(pass);
   user_name = f_name + " " + l_name;
   try {
 
@@ -234,7 +266,7 @@ app.post("/register_user_data", (req, res) => {
         } else {
           connection.query(
             "INSERT into users (firstname,lastname,email,password) values($1,$2,$3,$4)",
-            [f_name, l_name, email, pass],
+            [f_name, l_name, email, hashPwd],
             function (err, result) {
               if (err) {
                 console.log(err);
@@ -256,12 +288,13 @@ app.post('/course_upload', upload.single('courseFile'), async (req, res) => {
     const fileBuffer = req.file.buffer;
     const jsonData = JSON.parse(fileBuffer.toString());
 
-    const { course, modules, quiz } = jsonData;
+    const { course, modules, quiz  } = jsonData;
 
     const newCourse = new Course({
       course,
       modules,
-      quiz
+      quiz,
+      tutor_email: req.query.email
     });
 
     await newCourse.save();
@@ -297,6 +330,18 @@ app.get('/get_courses', async (req, res) => {
   }
 });
 
+app.get('/get_tutor_courses', async (req, res) => {
+  try {
+    // Retrieve all courses from the MongoDB collection
+    let courses = await Course.find({ tutor_email: req.query.email});
+    let course_id = req.query.course_id;
+    res.json(courses);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 app.get('/show_course', async (req, res) => {
   try {
     res.render('course_dynamic', { co_id: req.query.course_id });
@@ -306,43 +351,62 @@ app.get('/show_course', async (req, res) => {
   }
 });
 
-app.post('/tutor_register', (req, res) => {
-  const { fullName, email, subject, experience, qualification, availability } = req.body;
-  connection.query(
-    'SELECT * FROM tutors WHERE email = $1',
-    [email],
-    (error, results) => {
-      if (error) {
-        console.error('Error querying MySQL:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-        return;
-      }
-      results = results.rows;     
-      if (results && results.length > 0) {
-        res.render("email_already_exist.ejs");
-      }
-      const insertQuery = `
-      INSERT INTO tutors (fullName, email, subject, experience, qualification, availability, approve)
-      VALUES ($1, $2, $3, $4, $5, $6, 0)
-  `;
-      connection.query(insertQuery, [fullName, email, subject, experience, qualification, availability], (err, result) => {
-        if (err) {
-          console.error('Error inserting data:', err);
-          res.status(500).send('Error inserting data');
-        } else {
-          console.log('Data inserted successfully');
-          res.render("tutor_msg");
-        }
-      });
-
-      mailer.sendmailForAdmin(
-        'akmishra6614@gmail.com',
-        ['amarjeet_k@pursuitsoftware.biz'],
-        { fullName, email, subject, experience, qualification, availability }
-      );
-    });
-
+app.get('/delete_course', async (req, res) => {
+  try {
+    let course_id = req.query.course_id;
+    console.log(course_id, '456789098765');
+    let courses = await Course.deleteOne({ _id : course_id });
+    res.status(200).json({ success: true});
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
 });
+
+app.post('/tutor_register', (req, res) => {
+  try {
+    connection.query(
+      'SELECT * FROM tutors WHERE email = $1',
+      [req.body.email],
+      (error, results) => {
+        results = results.rows;
+        if (error) {
+          console.error('Error querying MySQL:', error);
+          res.status(500).json({ error: 'Internal Server Error' });
+          return;
+        } if (results.length > 0) {
+          // Email is already in use
+          res.render("email_already_exist.ejs");
+        } else {
+          const { fullName, email, subject, experience, qualification, availability } = req.body;
+
+          const insertQuery = `
+      INSERT INTO tutors (fullName, email, subject, experience, qualification, availability,approve)
+      VALUES ($1, $2, $3, $4, $5, $6,0)`
+            ;
+          console.log([fullName, email, subject, experience, qualification, availability]);
+
+          connection.query(insertQuery, [fullName, email, subject, experience, qualification, availability], (err, result) => {
+            if (err) {
+              console.error('Error inserting data:', err);
+              res.status(500).send('Error inserting data');
+            } else {
+              const admin_email = 'amarjeet_k@pursuitsoftware.biz';
+              mailer.sendmailForAdmin('akmishra6614@gmail.com', admin_email,
+                { fullName, email, subject, experience, qualification, availability });
+              console.log('Data inserted successfully');
+              res.render("tutor_msg");
+            }
+          });
+        }
+      })
+  } catch (err) {
+    res.send(err);
+  }
+});
+
+
+
 
 app.get("/tutor_login", (req, res) => {
   res.render("tutor_login");
@@ -355,10 +419,11 @@ app.post('/tutor_login_action', (req, res) => {
   console.log("tutor action hit.....");
   const email = req.body.email;
   const password = req.body.password;
+  const hashPwd = hashPassword(password);
   console.log(email, " ", password);
   // Check the database for authentication
   const query = 'SELECT * FROM tutor_approved_list WHERE email = $1 AND password = $2';
-  connection.query(query, [email, password], (err, results) => {
+  connection.query(query, [email, hashPwd], (err, results) => {
     results = results.rows;
     if (err) {
       console.error('Database query error:', err);
@@ -366,7 +431,8 @@ app.post('/tutor_login_action', (req, res) => {
     } else {
       if (results.length > 0) {
         // Authentication successful
-        res.render('tutor_upload');
+       console.log('hello', email);
+        res.render('tutor_upload', { email } );
       } else {
         // Invalid login
         res.render('tutor_invalid');
@@ -377,7 +443,7 @@ app.post('/tutor_login_action', (req, res) => {
 
 app.post('/admin_login', (req, res) => {
   const { email, password } = req.body;
-
+  const hashPwd = hashPassword(password);
   // Query to find the user by email
   const sql = 'SELECT * FROM admin_users WHERE email = $1';
 
@@ -389,7 +455,7 @@ app.post('/admin_login', (req, res) => {
     }
 
     // Check if user exists and password is correct
-    if (results.length > 0 && password === results[0].password) {
+    if (results.length > 0 && hashPwd === results[0].password) {
       // Successful login
       console.log("admin logeedd again");
       res.redirect('/display');
@@ -400,11 +466,51 @@ app.post('/admin_login', (req, res) => {
   });
 });
 
+
+app.post('/admin_register', (req, res) => {
+  var f_name = req.body.firstname;
+  var l_name = req.body.lastname;
+  var email = req.body.email;
+  var pass = req.body.password;
+  const hashPwd = hashPassword(pass);
+  try {
+    connection.query(
+      'SELECT * FROM admin_users WHERE email = $1',
+      [email],
+      (error, results) => {
+        results = results.rows;
+        if (error) {
+          console.error('Error querying MySQL:', error);
+          res.status(500).json({ error: 'Internal Server Error' });
+          return;
+        } if (results.length > 0) {
+          // Email is already in use
+          return res.json({});
+        } else {
+          connection.query(
+            "INSERT into admin_users (firstname,lastname,email,password) values($1,$2,$3,$4)",
+            [f_name, l_name, email, hashPwd],
+            function (err, result) {
+              if (err) {
+                console.log(err);
+              } else {
+                return res.json({});
+              }
+            }
+          );
+        }
+      })
+  } catch (err) {
+    res.send(err);
+  }
+});
+
 app.get('/display', (req, res) => {
-  const query = 'SELECT * FROM tutors WHERE approve = 0';
+  const query = 'SELECT * FROM tutors where approve=0';
 
   connection.query(query, (err, results) => {
     if (err) throw err;
+    console.log(results);
     results = results.rows;
     res.render('admin_manage', { tutors: results });
   });
@@ -414,14 +520,13 @@ app.post('/approve/:id', (req, res) => {
   const tutorId = req.params.id;
   const { fullName, email, password } = req.body;
 
-  // Insert into tutor_approved_list
-  console.log('224')
+  const hashPwd = hashPassword(password);
   connection.query(
     'INSERT INTO tutor_approved_list (full_name, email, password) VALUES ($1, $2, $3)',
-    [fullName, email, password],
+    [fullName, email, hashPwd],
     (error) => {
       if (error) throw error;
-      //console.lo
+      console.lo
     }
   );
 
@@ -434,19 +539,19 @@ app.post('/approve/:id', (req, res) => {
       res.render('tutor_approved', { fullName });
     }
   );
-  //mail to tutor after aproval...
+
   mailer.sendmailForTutor('akmishra6614@gmail.com', [email],
     { fullName, email, password }
   )
 });
 
 app.post('/reset-password', (req, res) => {
-  const { firstName, lastName, email, newPassword } = req.body;
-
+  const {  email, newPassword } = req.body;
+  const hashPwd = hashPassword(newPassword);
   // Check if the user with the provided details exists in the database
   connection.query(
-    'SELECT * FROM users WHERE firstName = $1 AND lastName = $2 AND email = $3',
-    [firstName, lastName, email],
+    'SELECT * FROM users WHERE email = $1',
+    [email],
     (err, results) => {
       if (err) throw err;
       results = results.rows;
@@ -457,8 +562,8 @@ app.post('/reset-password', (req, res) => {
 
       // Update the user's password
       connection.query(
-        'UPDATE users SET password = $1 WHERE firstName = $2 AND lastName = $3 AND email = $4',
-        [newPassword, firstName, lastName, email],
+        'UPDATE users SET password = $1 WHERE email = $2',
+        [hashPwd, email],
         (updateErr, updateResults) => {
           if (updateErr) throw updateErr;
 

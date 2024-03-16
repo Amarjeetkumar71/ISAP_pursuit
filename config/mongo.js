@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const MONGO_URI = 'mongodb://localhost:27017/pursuit'; // Replace with your actual MongoDB connection string
+const MONGO_URI = 'mongodb+srv://djayp:WqQWkM2OyQWdnt3L@clusterapp.ea4zee4.mongodb.net/pursuit'; // Replace with your actual MongoDB connection string
 
 const connectDB = async () => {
     try {
