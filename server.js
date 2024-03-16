@@ -41,10 +41,8 @@ const hashPassword = (password) => {
 const secretKey = 'your-secret-key';
 app.use(express.static(path.join(__dirname, 'public')));    //builtin middleware to allow to use all file in public
 
-app.use("/api/users", userRouter);   //foward my url start from api/users/ to UserRout
 app.use(express.json());
 app.use(cookie());
-app.use("/api/course", courseRouter);
 
 // Middleware function for authentication
 function authenticate(req, res, next) {

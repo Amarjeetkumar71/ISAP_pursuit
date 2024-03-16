@@ -1,5 +1,6 @@
 const { Client } = require('pg');
 const fs = require('fs');
+const path = require('path');
 
 // const client = new Client({
 //   user: 'djay',
@@ -9,13 +10,15 @@ const fs = require('fs');
 //   port: 5432,
 // });
 
+const certificatePath = path.join(__dirname, './DigiCertGlobalRootCA.crt.pem');
+
 const client = new Client({
   user: 'postgresadmin',
   host: 'postgressapp.postgres.database.azure.com',
   database: 'postgres',
   password: 'Djay@1998',
   port: 5432,
-  ssl:{ca:fs.readFileSync('/Users/dhananjay/Downloads/ISAP/ISAP/config/DigiCertGlobalRootCA.crt.pem')}
+  ssl:{ca:fs.readFileSync(certificatePath)}
 });
 
 client.connect();
