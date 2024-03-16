@@ -139,7 +139,7 @@ app.get('/admin_login', (req, res) => {
 
 app.get("/", (req, res) => {
   console.log("Home page entered");
-  res.sendFile(path.join(__dirname,"index.html"));
+  res.render("index");
   //res.redirect("/register.ejs");
   //res.send("hello jee");
 
