@@ -573,5 +573,9 @@ app.post('/reset-password', (req, res) => {
 });
 
 
-app.listen(4600);
+
+const port = process.env.PORT || 4600;
+app.listen(port, () => {
+  console.log(`Server running.... on port ${port}`);
+});
 console.log("Server running.... on port 4600");
