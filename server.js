@@ -29,6 +29,7 @@ const courseSchema = new mongoose.Schema({
   modules: Object,
   quiz: Object,
   tutor_email: String,
+  archive: { type: Boolean, default: false } ,
 });
 
 const Course = mongoose.model('Course', courseSchema);
@@ -310,7 +311,12 @@ app.post('/course_upload', upload.single('courseFile'), async (req, res) => {
 app.get('/get_courses', async (req, res) => {
   try {
     // Retrieve all courses from the MongoDB collection
-    let courses = await Course.find();
+    let courses = await Course.find({ 
+      $or: [
+        { archive: false }, 
+        { archive: { $exists: false } }
+      ]
+     });
     let course_id = req.query.course_id;
     if (course_id) {
       courses = courses.filter(c => c._id == course_id);
@@ -333,7 +339,13 @@ app.get('/get_courses', async (req, res) => {
 app.get('/get_tutor_courses', async (req, res) => {
   try {
     // Retrieve all courses from the MongoDB collection
-    let courses = await Course.find({ tutor_email: req.query.email});
+    let courses = await Course.find({
+       tutor_email: req.query.email,
+       $or: [
+        { archive: false }, 
+        { archive: { $exists: false } } 
+      ]
+      });
     let course_id = req.query.course_id;
     res.json(courses);
   } catch (error) {
@@ -355,7 +367,7 @@ app.get('/delete_course', async (req, res) => {
   try {
     let course_id = req.query.course_id;
     console.log(course_id, '456789098765');
-    let courses = await Course.deleteOne({ _id : course_id });
+    let courses = await Course.updateOne({ _id : course_id }, {archive: true});
     res.status(200).json({ success: true});
   } catch (error) {
     console.error(error);
