@@ -16,7 +16,7 @@ const client = new Client({
   user: 'postgresadmin',
   host: 'postgressapp.postgres.database.azure.com',
   database: 'postgres',
-  password: 'Djay@1998',
+  password: 'Amar@1947',
   port: 5432,
   ssl:{ca:fs.readFileSync(certificatePath)}
 });
