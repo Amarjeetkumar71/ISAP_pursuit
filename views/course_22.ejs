@@ -91,6 +91,7 @@
             display: block;
             width: 100%;
             padding: 10px;
+            /* Adjust padding as needed */
             background-color: #4CAF50;
             color: #fff;
             text-align: center;
@@ -103,6 +104,28 @@
 
         .enroll-button:hover {
             background-color: #45a049;
+        }
+
+        .delete-button {
+            display: block;
+            width: 100%;
+            /* Adjust the width as needed */
+            padding: 10px;
+            /* Adjust padding as needed */
+            background-color: #ff0000;
+            /* Example color */
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .delete-button:hover {
+            background-color: #cc0000;
+            /* Example color */
         }
     </style>
     <!-- <link rel="stylesheet" href="/css/style.css"> -->
@@ -132,7 +155,9 @@
         <h1>Course List</h1>
 
         <div class="course-grid">
-            
+            <!-- Course 1 -->
+
+            <!--here goes the courses-->
 
         </div>
     </div>
@@ -140,9 +165,10 @@
     <!-- ... (your existing HTML code) ... -->
 
     <script>
+        const email = '<%= email %>';
         document.addEventListener("DOMContentLoaded", function () {
             // Fetch data from the API
-            fetch("/get_courses")
+            fetch(`/get_tutor_courses?email=${email}`)
                 .then(response => response.json())
                 .then(data => {
                     // Get the container element
@@ -166,8 +192,28 @@
 
                         const enrollButton = document.createElement('a');
                         enrollButton.className = 'enroll-button';
-                        enrollButton.textContent = 'Enroll';
+                        enrollButton.textContent = 'View Course';
                         enrollButton.href = `/show_course?course_id=${courseData._id}`;
+
+
+                        const deleteButton = document.createElement('button');
+                        deleteButton.className = 'enroll-button';
+                        deleteButton.textContent = 'Delete Course';
+                        deleteButton.addEventListener('click', function () {
+                            // Make API call to delete the course
+                            fetch(`/delete_course?course_id=${courseData._id}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    // Remove the course container from the DOM if deletion is successful
+                                    if (data.success) {
+                                        location.reload();
+                                    } else {
+                                        console.error('Error deleting course:', data.error);
+                                    }
+                                })
+                                .catch(error => console.error('Error deleting course:', error));
+                        });
+
 
                         const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
                         svgIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
@@ -189,12 +235,20 @@
                         svgIcon.appendChild(path1);
                         svgIcon.appendChild(path2);
 
+                        deleteButton.appendChild(svgIcon);
                         enrollButton.appendChild(svgIcon);
+
+                        // viewButton.style.marginBottom = '5px'; // Adjust the value as needed
+                        // deleteButton.style.marginTop = '5px'; // Adjust the value as needed
+                        const buttonSpacer = document.createElement('div');
+                        buttonSpacer.style.height = '10px'; // Adjust the height as needed
 
                         // Append elements to the course container
                         courseInfo.appendChild(courseTitle);
                         courseInfo.appendChild(courseDescription);
                         courseInfo.appendChild(enrollButton);
+                        courseInfo.appendChild(buttonSpacer);
+                        courseInfo.appendChild(deleteButton);
 
                         courseContainer.appendChild(courseInfo);
 

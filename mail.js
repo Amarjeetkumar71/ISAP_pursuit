@@ -9,7 +9,7 @@ const sendmailForAdmin = (from_email, to_email, tutorDetails) => {
         secure: true,
         auth: {
             user: "akmishra6614@gmail.com",
-            pass: "xacx qzsn yrqv oahd"
+            pass: "ttwb gsrd jrha nulq"
         }
     });
     const emailContent = createEmailContentForAdmin(tutorDetails);
@@ -65,6 +65,39 @@ const sendmailForTutor = (from_email, to_email, tutorDetails) => {
 
     // Close the transporter when done (optional)
     transporter.close();
+
+};
+
+const sendmailForContactUs = (from_email, to_email, tutorDetails) => {
+  const transporter = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+          user: "akmishra6614@gmail.com",
+          pass: "ttwb gsrd jrha nulq"
+      }
+  });
+  const emailContent = createEmailContentForContact(tutorDetails);
+  // Compose the email
+  const mailoptions = {
+      from: from_email,
+      to: to_email,
+      subject: 'Tutor Details Review',
+      html: emailContent
+  };
+
+  // Send the email
+  transporter.sendMail(mailoptions, (error, info) => {
+      if (error) {
+          return console.error('Error:', error);
+      }
+      console.log('Email sent:', info.response);
+  });
+
+  // Close the transporter when done (optional)
+  transporter.close();
 
 };
 
@@ -186,9 +219,65 @@ const  createEmailContentForTutor = (details) => {
 
     return htmlString;
 }
+const createEmailContentForContact = (details) => {
+  const htmlString = `
+    <html>
+      <head>
+        <style>
+          /* Add some basic styling if needed */
+          body {
+            font-family: Arial, sans-serif;
+          }
+          table {
+            border-collapse: collapse;
+            width: 100%;
+          }
+          th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+          }
+          th {
+            background-color: #f2f2f2;
+          }
+        </style>
+      </head>
+      <body>
+        <p>Hi Admin,\n</p>
+        <p>Some user has a query, and their details are as follows:</p>
+        <table>
+          <tr>
+            <th>Field</th>
+            <th>Data</th>
+          </tr>
+          <tr>
+            <td>Name</td>
+            <td>${details.name}</td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td>${details.email}</td>
+          </tr>
+          <tr>
+            <td>Query</td>
+            <td>${details.message}</td>
+          </tr>
+        </table>
+
+        <p>Kindly help in resolving this.</p>
+        <p>Thanks & Regards,</p>
+        <p>Pursuit System</p>
+      </body>
+    </html>
+  `;
+
+  return htmlString;
+}
+
 
 module.exports = {
     sendmailForAdmin,
-    sendmailForTutor
+    sendmailForTutor,
+    sendmailForContactUs
 };
 
